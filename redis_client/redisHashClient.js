@@ -30,6 +30,19 @@ module.exports =
 	},
 
 	/* Get a Hash Table Content */
+	getFieldModel: function(userToken, tableName, field, callback)
+	{
+		var dict = {
+			"UserToken" : userToken,
+			"Key"		: tableName,
+			"Field"		: field
+		}
+		var queryString = utility.generateQueryString(dict)
+		var url = configuration.BaseURL + 'Database/RHash/Get?' + queryString
+		requestHandler(url, function (error, result) { callback(error, result)})
+	},
+
+	/* Get a Hash Table Content */
 	getModel: function(userToken, tableName, callback)
 	{
 		var dict = {
