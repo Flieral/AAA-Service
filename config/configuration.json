@@ -1,0 +1,41 @@
+{
+	"BaseURL"	:	"http://0.0.0.0:8080/api/1/",
+	"Successful":	"Successful Operating",
+
+	"ConstantMMTime"			: "Time",
+	"ConstantMMStatusCode"		: "StatusCode",
+	"ConstantMMServiceCaller"	: "ServiceCaller",
+	"ConstantMMModuleCaller"	: "ModuleCaller",
+	"ConstantMMAction"			: "Action",
+	"ConstantMMLogMessage"		: "LogMessage",
+	"ConstantMMObjectInfo"		: "ObjectInfo",
+
+	"TableQueryTemporary"				: "AccountModel:MonitorModel:Temp:",
+	"TableMAMonitorModel"				: "MonitorModel:",
+	"TableMSAccountModelMonitorModel"	: "AccountModel:MonitorModel:",
+	"TableMLMonitorModel"				: "MonitorModel:",
+
+	"TableMonitorModel" :
+	{
+		"StatusCode"	:
+		{
+			"Sample1"	: 	"MonitorModel:StatusCodeSample1:",
+			"Sample2"	: 	"MonitorModel:StatusCodeSample2:"
+		},
+		"ActionType"	:
+		{
+			"Sample1"	: 	"MonitorModel:ActionTypeSample1:",
+			"Sample2"	: 	"MonitorModel:ActionTypeSample2:"
+		},
+		"ServiceCallerType"	:
+		{
+			"Sample1"	: 	"MonitorModel:ServiceCallerTypeSample1:",
+			"Sample2"	: 	"MonitorModel:ServiceCallerTypeSample2:"
+		},
+		"ModuleCallerType"	:
+		{
+			"Sample1"	: 	"MonitorModel:ModuleCallerTypeSample1:",
+			"Sample2"	: 	"MonitorModel:ModuleCallerTypeSample2:"
+		}
+	}
+}
