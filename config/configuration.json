@@ -2,40 +2,66 @@
 	"BaseURL"	:	"http://0.0.0.0:8080/api/1/",
 	"Successful":	"Successful Operating",
 
-	"ConstantMMTime"			: "Time",
-	"ConstantMMStatusCode"		: "StatusCode",
-	"ConstantMMServiceCaller"	: "ServiceCaller",
-	"ConstantMMModuleCaller"	: "ModuleCaller",
-	"ConstantMMAction"			: "Action",
-	"ConstantMMLogMessage"		: "LogMessage",
-	"ConstantMMObjectInfo"		: "ObjectInfo",
+	"TableMAAccountModelUserToken"		: "AccountModel:UserToken:",
 
-	"TableQueryTemporary"				: "AccountModel:MonitorModel:Temp:",
-	"TableMAMonitorModel"				: "MonitorModel:",
-	"TableMSAccountModelMonitorModel"	: "AccountModel:MonitorModel:",
-	"TableMLMonitorModel"				: "MonitorModel:",
+	"ConstantAMEmail"			: "Email",
+	"ConstantAMCompanyName"		: "CompanyName",
+	"ConstantAMUsername"		: "Username",
+	"ConstantAMPassword"		: "Password",
+	"ConstantAMRegistrationCountry"		: "RegistrationCountry",
+	"ConstantAMRegistrationMacAddress"	: "RegistrationMacAddress",
+	"ConstantAMRegistrationStatus"		: "RegistrationStatus",
+	"ConstantAMSuspendStatus"	: "SuspendStatus",
+	"ConstantAMWebhookBaseURL"	: "WebhookBaseURL",
+	"ConstantAMAttempt"			: "Attempt",
+	"ConstantAMMessage"			: "Message",
+	"ConstantNPMMacAddress"		: "MacAddress",
+	"ConstantNPMCountry"		: "Country",
+	"ConstantNPMAgent"			: "Agent",
+	"ConstantNPMISP"			: "ISP",
 
-	"TableMonitorModel" :
+	"TableMAAccountModel"				: "AccountModel:",
+	"TableMANetworkPrivacyIPDetails"	: "NetworkPrivacy:IPDetails:",
+	
+	"TableMSAccountModelReferralPlan"	: "AccountModel:ReferralPlan:",
+	"TableMSNetworkPrivacyIPList"		: "NetworkPrivacy:IPList:",
+
+	"TableMSAccountModelUsername"		: "AccountModel:Username:",
+	"TableMSAccountModelEmail"			: "AccountModel:Email:",
+	"TableMSAccountModelCompanyName"	: "AccountModel:CompanyName:",
+
+	"TableAccountModel" :
 	{
-		"StatusCode"	:
+		"RegistrationStatus"	:
 		{
-			"Sample1"	: 	"MonitorModel:StatusCodeSample1:",
-			"Sample2"	: 	"MonitorModel:StatusCodeSample2:"
+			"Sample1"	: 	"AccountModel:RegistrationStatusample1:",
+			"Sample2"	: 	"AccountModel:RegistrationStatusSample2:"
 		},
-		"ActionType"	:
+		"SuspendStatus"	:
 		{
-			"Sample1"	: 	"MonitorModel:ActionTypeSample1:",
-			"Sample2"	: 	"MonitorModel:ActionTypeSample2:"
+			"Sample1"	: 	"AccountModel:SuspendStatusSample1:",
+			"Sample2"	: 	"AccountModel:SuspendStatusSample2:"
 		},
-		"ServiceCallerType"	:
+		"RegistrationCountry"	:
 		{
-			"Sample1"	: 	"MonitorModel:ServiceCallerTypeSample1:",
-			"Sample2"	: 	"MonitorModel:ServiceCallerTypeSample2:"
+			"Sample1"	: 	"AccountModel:RegistrationCountrySample1:",
+			"Sample2"	: 	"AccountModel:RegistrationCountrySample2:"
+		}
+	},
+
+	"Enums" :
+	{
+		"CountryType": {
+			"Sample1"	: "Sample1",
+			"Sample2"	: "Sample2"
 		},
-		"ModuleCallerType"	:
-		{
-			"Sample1"	: 	"MonitorModel:ModuleCallerTypeSample1:",
-			"Sample2"	: 	"MonitorModel:ModuleCallerTypeSample2:"
+		"RegistrationStatusType":{
+			"Sample1"	: "Sample1",
+			"Sample2"	: "Sample2"			
+		},
+		"SuspendStatusType":{
+			"Sample1"	: "Sample1",
+			"Sample2"	: "Sample2"
 		}
 	}
 }
