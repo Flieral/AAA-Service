@@ -18,8 +18,9 @@ exports.EmailLogin = function(userToken, copmanyName, password, email, callback)
             {
                 var accountHashID = result.result
                 
-                tableName = configuration.TableMAAccountModel + accountHashID
-                redisClient.hashModel.getFieldModel(userToken, tableName, configuration.ConstantAMPassword, function(error, result) 
+                /* AccountModel:accountHashID */
+                var tableModel = configuration.TableMAAccountModel + accountHashID
+                redisClient.hashModel.getFieldModel(userToken, tableModel, configuration.ConstantAMPassword, function(error, result) 
                 {
                     if (error)
                         callback(error, null)
@@ -31,13 +32,30 @@ exports.EmailLogin = function(userToken, copmanyName, password, email, callback)
 	                        tableName 	= configuration.TableMAAccountModelUserToken + accountHashID
 	                        userSessionToken = utility.generateUniqueHashID()
 	                        redisClient.stringModel.createTemporaryModel(userToken, tableName, userSessionToken, sessionLength, function(error, result){})
-
+                            redisClient.hashModel.createFieldModel(userToken, tableModel, configuration.ConstantAMAttempt, "0", function(error, result){})
                             var result = {}
 	                        result.result =	userSessionToken
 	                        callback(null, result)
                         }
                         else
+                        {
+                            redisClient.hashModel.updateFieldModelIncrBy(userToken, tableModel, configuration.ConstantAMAttempt, "1", function(error, result)
+                            {
+                                if (error)
+                                    callback(error, null)
+                                else
+                                    if (parseInt(result.result) >= configuration.MaximumUserAttempt)
+                                    {
+                                        /* AccountModel:BlackList:accountHashID */
+                                        var tableModel = configuration.TableMAAccountModelBlackList + accountHashID
+                                        redisClient.stringModel.createTemporaryModel(userToken, tableModel, accountHashID, configuration.MaximumBlockPeriod, function(error, result){})
+                                        /* AccountModel:accountHashID */
+                                        tableModel = configuration.TableMAAccountModel + accountHashID
+                                        redisClient.hashModel.createFieldModel(userToken, tableModel, configuration.ConstantAMAttempt, "0", function(error, result){})
+                                }
+                            })
                             callback(new Error("Error"), null)
+                        }
                     }
                 })
             }
@@ -60,8 +78,8 @@ exports.UsernameLogin = function(userToken, copmanyName, password, username, cal
             else
             {
                 var accountHashID = result.result
-                tableName = configuration.TableMAAccountModel + accountHashID
-                redisClient.hashModel.getFieldModel(userToken, tableName, configuration.ConstantAMPassword, function(error, result) 
+                var tableModel = configuration.TableMAAccountModel + accountHashID
+                redisClient.hashModel.getFieldModel(userToken, tableModel, configuration.ConstantAMPassword, function(error, result) 
                 {
                     if (error)
                         callback(error, null)
@@ -73,13 +91,30 @@ exports.UsernameLogin = function(userToken, copmanyName, password, username, cal
 	                        tableName 	= configuration.TableMAAccountModelUserToken + accountHashID
 	                        userSessionToken = utility.generateUniqueHashID()
 	                        redisClient.stringModel.createTemporaryModel(userToken, tableName, userSessionToken, sessionLength, function(error, result){})
-
+                            redisClient.hashModel.createFieldModel(userToken, tableModel, configuration.ConstantAMAttempt, "0", function(error, result){})
                             var result = {}
 	                        result.result =	userSessionToken
 	                        callback(null, result)
                         }
                         else
+                        {
+                            redisClient.hashModel.updateFieldModelIncrBy(userToken, tableModel, configuration.ConstantAMAttempt, "1", function(error, result)
+                            {
+                                if (error)
+                                    callback(error, null)
+                                else
+                                    if (parseInt(result.result) >= configuration.MaximumUserAttempt)
+                                    {
+                                        /* AccountModel:BlackList:accountHashID */
+                                        var tableModel = configuration.TableMAAccountModelBlackList + accountHashID
+                                        redisClient.stringModel.createTemporaryModel(userToken, tableModel, accountHashID, configuration.MaximumBlockPeriod, function(error, result){})
+                                        /* AccountModel:accountHashID */
+                                        tableModel = configuration.TableMAAccountModel + accountHashID
+                                        redisClient.hashModel.createFieldModel(userToken, tableModel, configuration.ConstantAMAttempt, "0", function(error, result){})
+                                    }
+                            })
                             callback(new Error("Error"), null)
+                        }
                     }
                 })
             }

@@ -69,3 +69,27 @@ exports.UsernameLoginChecker = function(userToken, copmanyName, password, userna
         }
     })
 }
+
+exports.UserAttemptChecker = function(userToken, accountHashID, callback)
+{
+    var tableModel = configuration.TableMAAccountModelBlackList + accountHashID
+    redisClient.stringModel.getModel(userToken, tableModel, function(error, result)
+    {
+        if (error)
+            callback(error, null)
+        else
+        {
+            var res = {}
+            if (result.result === 'null')
+            {
+                res.result = 'Available'
+                callback(null, result)
+            }
+            else
+            {
+                res.result = 'NotAvailable'
+                callback(null, result)
+            }
+        }
+    })
+}
