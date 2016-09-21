@@ -29,6 +29,34 @@ module.exports =
 		requestHandler(url, function (error, result) { callback(error, result)})
 	},
 
+	/* Create a Filed Value in Hash Table */
+	createFieldModel: function(userToken, tableName, field, value, callback)
+	{
+		var dict = {
+			"UserToken" : userToken,
+			"Key"		: tableName,
+			"Field"		: field,
+			"Value"		: value
+		}
+		var queryString = utility.generateQueryString(dict)
+		var url = configuration.BaseURL + 'Database/RHash/Set?' + queryString
+		requestHandler(url, function (error, result) { callback(error, result)})
+	},
+
+	/* Update a Filed Value by Increasing in Hash Table */
+	updateFieldModelIncrBy: function(userToken, tableName, field, Increment, callback)
+	{
+		var dict = {
+			"UserToken" : userToken,
+			"Key"		: tableName,
+			"Field"		: field,
+			"Increment"	: value
+		}
+		var queryString = utility.generateQueryString(dict)
+		var url = configuration.BaseURL + 'Database/RHash/IncrBy?' + queryString
+		requestHandler(url, function (error, result) { callback(error, result)})
+	},
+
 	/* Get a Hash Table Content */
 	getFieldModel: function(userToken, tableName, field, callback)
 	{
