@@ -2,7 +2,11 @@
 	"BaseURL"	:	"http://0.0.0.0:8080/api/1/",
 	"Successful":	"Successful Operating",
 
+	"MaximumUserAttempt"		: 3,
+	"MaximumBlockPeriod"		: 1000,
+
 	"TableMAAccountModelUserToken"		: "AccountModel:UserToken:",
+	"TableMAAccountModelBlackList"		: "AccountModel:BlackList:",
 
 	"ConstantAMEmail"			: "Email",
 	"ConstantAMCompanyName"		: "CompanyName",
