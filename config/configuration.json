@@ -1,0 +1,71 @@
+{
+	"BaseURL"	:	"http://0.0.0.0:8080/api/1/",
+	"Successful":	"Successful Operating",
+
+	"MaximumUserAttempt"		: 3,
+	"MaximumBlockPeriod"		: 1000,
+
+	"TableMAAccountModelUserToken"		: "AccountModel:UserToken:",
+	"TableMAAccountModelBlackList"		: "AccountModel:BlackList:",
+
+	"ConstantAMEmail"			: "Email",
+	"ConstantAMCompanyName"		: "CompanyName",
+	"ConstantAMUsername"		: "Username",
+	"ConstantAMPassword"		: "Password",
+	"ConstantAMRegistrationCountry"		: "RegistrationCountry",
+	"ConstantAMRegistrationMacAddress"	: "RegistrationMacAddress",
+	"ConstantAMRegistrationStatus"		: "RegistrationStatus",
+	"ConstantAMSuspendStatus"	: "SuspendStatus",
+	"ConstantAMWebhookBaseURL"	: "WebhookBaseURL",
+	"ConstantAMAttempt"			: "Attempt",
+	"ConstantAMMessage"			: "Message",
+	"ConstantNPMMacAddress"		: "MacAddress",
+	"ConstantNPMCountry"		: "Country",
+	"ConstantNPMAgent"			: "Agent",
+	"ConstantNPMISP"			: "ISP",
+
+	"TableMAAccountModel"				: "AccountModel:",
+	"TableMANetworkPrivacyIPDetails"	: "NetworkPrivacy:IPDetails:",
+	
+	"TableMSAccountModelReferralPlan"	: "AccountModel:ReferralPlan:",
+	"TableMSNetworkPrivacyIPList"		: "NetworkPrivacy:IPList:",
+
+	"TableMSAccountModelUsername"		: "AccountModel:Username:",
+	"TableMSAccountModelEmail"			: "AccountModel:Email:",
+	"TableMSAccountModelCompanyName"	: "AccountModel:CompanyName:",
+
+	"TableAccountModel" :
+	{
+		"RegistrationStatus"	:
+		{
+			"Sample1"	: 	"AccountModel:RegistrationStatusample1:",
+			"Sample2"	: 	"AccountModel:RegistrationStatusSample2:"
+		},
+		"SuspendStatus"	:
+		{
+			"Sample1"	: 	"AccountModel:SuspendStatusSample1:",
+			"Sample2"	: 	"AccountModel:SuspendStatusSample2:"
+		},
+		"RegistrationCountry"	:
+		{
+			"Sample1"	: 	"AccountModel:RegistrationCountrySample1:",
+			"Sample2"	: 	"AccountModel:RegistrationCountrySample2:"
+		}
+	},
+
+	"Enums" :
+	{
+		"CountryType": {
+			"Sample1"	: "Sample1",
+			"Sample2"	: "Sample2"
+		},
+		"RegistrationStatusType":{
+			"Sample1"	: "Sample1",
+			"Sample2"	: "Sample2"			
+		},
+		"SuspendStatusType":{
+			"Sample1"	: "Sample1",
+			"Sample2"	: "Sample2"
+		}
+	}
+}
