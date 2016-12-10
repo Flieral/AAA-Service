@@ -1,6 +1,6 @@
 var uuid = require('node-uuid')
 
-module.exports = 
+module.exports =
 {
 	generateQueryString: function(data)
 	{

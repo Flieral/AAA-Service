@@ -1,6 +1,6 @@
 var redisClient   = require('../redis_client/redisClient').getClient()
 var configuration = require('../config/configuration.json')
-var utility       = require('../utility')
+var utility       = require('../../public/utility')
 
 module.exports = {
   addIPAddressToSafeIPAddress: function(accountHashID, networkModel, callback) {
