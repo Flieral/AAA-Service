@@ -4,34 +4,35 @@
 
 	"MaximumUserAttempt"		: 3,
 	"MaximumBlockPeriod"		: 1000,
+	"MaximumSessionLength"	: 1000,
 
 	"TableMAAccountModelUserToken"		: "AccountModel:UserToken:",
 	"TableMAAccountModelBlackList"		: "AccountModel:BlackList:",
 
-	"ConstantAMEmail"			: "Email",
+	"ConstantAMEmail"					: "Email",
 	"ConstantAMCompanyName"		: "CompanyName",
-	"ConstantAMUsername"		: "Username",
-	"ConstantAMPassword"		: "Password",
-	"ConstantAMRegistrationCountry"		: "RegistrationCountry",
+	"ConstantAMUsername"			: "Username",
+	"ConstantAMPassword"			: "Password",
+	"ConstantAMRegistrationCountry"			: "RegistrationCountry",
 	"ConstantAMRegistrationMacAddress"	: "RegistrationMacAddress",
-	"ConstantAMRegistrationStatus"		: "RegistrationStatus",
-	"ConstantAMSuspendStatus"	: "SuspendStatus",
+	"ConstantAMRegistrationStatus"			: "RegistrationStatus",
+	"ConstantAMSuspendStatus"		: "SuspendStatus",
 	"ConstantAMWebhookBaseURL"	: "WebhookBaseURL",
 	"ConstantAMAttempt"			: "Attempt",
 	"ConstantAMMessage"			: "Message",
-	"ConstantNPMMacAddress"		: "MacAddress",
+	"ConstantNPMMacAddress"	: "MacAddress",
 	"ConstantNPMCountry"		: "Country",
 	"ConstantNPMAgent"			: "Agent",
-	"ConstantNPMISP"			: "ISP",
+	"ConstantNPMISP"				: "ISP",
 
-	"TableMAAccountModel"				: "AccountModel:",
+	"TableMAAccountModel"							: "AccountModel:",
 	"TableMANetworkPrivacyIPDetails"	: "NetworkPrivacy:IPDetails:",
-	
-	"TableMSAccountModelReferralPlan"	: "AccountModel:ReferralPlan:",
-	"TableMSNetworkPrivacyIPList"		: "NetworkPrivacy:IPList:",
 
-	"TableMSAccountModelUsername"		: "AccountModel:Username:",
-	"TableMSAccountModelEmail"			: "AccountModel:Email:",
+	"TableMSAccountModelReferralPlan"	: "AccountModel:ReferralPlan:",
+	"TableMSNetworkPrivacyIPList"			: "NetworkPrivacy:IPList:",
+
+	"TableMSAccountModelUsername"			: "AccountModel:Username:",
+	"TableMSAccountModelEmail"				: "AccountModel:Email:",
 	"TableMSAccountModelCompanyName"	: "AccountModel:CompanyName:",
 
 	"TableAccountModel" :
@@ -59,11 +60,11 @@
 			"Sample1"	: "Sample1",
 			"Sample2"	: "Sample2"
 		},
-		"RegistrationStatusType":{
+		"RegistrationStatusType": {
 			"Sample1"	: "Sample1",
-			"Sample2"	: "Sample2"			
+			"Sample2"	: "Sample2"
 		},
-		"SuspendStatusType":{
+		"SuspendStatusType": {
 			"Sample1"	: "Sample1",
 			"Sample2"	: "Sample2"
 		}
