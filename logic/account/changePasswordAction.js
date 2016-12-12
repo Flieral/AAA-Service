@@ -1,54 +1,42 @@
 var redisClient   = require('../redis_client/redisClient').getClient()
 var configuration = require('../config/configuration.json')
-
+var userChecker = require('./userChcker')
 module.exports = {
-  changePasswordByUsername: function(username, password, callback) {
-    var userTable = configuration.TableMSAccountModelUsername + username
-		redisClient.get(userTable, function (err, replies) {
-    	if (err)
-				callback(err, null)
-      if (replies === 'null')
-        callback(null, configuration.message.login.notExistsUser)
-      else
-        this.passwordChange(replies, oldPassword, newPassword,function(err, replies) {
-          if (err)
-            callback(err, null)
-          callback(null, replies)
-        })
-		})
-  },
-
-  changePasswordByEmail: function(email, password, callback) {
-    var emailTable = configuration.TableMSAccountModelEmail + email
-		redisClient.get(emailTable, function (err, replies) {
-    	if (err)
-				callback(err, null)
-			if (replies === 'null')
-        callback(null, configuration.message.login.notExistsUser)
-      else
-        this.passwordChange(replies, oldPassword, newPassword,function(err, replies) {
-          if (err)
-            callback(err, null)
-          callback(null, replies)
-        })
-		})
-  },
-
-  passwordChange: function(accountHashID, oldPassword, newPassword, callback) {
+  startPasswordChanging: function(accountModelObject, callback) {
+    var accountHashID
+    if (accountModelObject.option === 'username')
+    {
+      userChecker.checkUserExistenceByUsername(accountModel.user, function (err, replies) {
+        if (err)
+          callback(err, null)
+        accountHashID = replies
+      }
+    }
+    else if (accountModelObject.option === 'email')
+    {
+      userChecker.checkUserExistenceByEmail(accountModel.user, function (err, replies) {
+        if (err)
+          callback(err, null)
+        accountHashID = replies
+      }
+    }
     var modelTable = configuration.TableMAAccountModel + accountHashID
     redisClient.hget(modelTable, configuration.ConstantAMPassword, function(err, replies) {
       if (err)
         callback(err, null)
-      if (replies === oldPassword)
-      {
-        redisClient.hset(modelTable, configuration.ConstantAMPassword, function(err, replies) {
+      if (replies === accountModelObject.password)
+        passwordChange(accountHashID, accountModelObject.newPassword, function(err, callback) {
           if (err)
             callback(err, null)
-          callback(null, configuration.message.changePassword.successfulChange)
-        })
-      }
-      else
-        callback(null, configuration.message.changePassword.successfulChange)
+          callback(null, 'password succesfully changed message')
+      })
     }
-  },
+  }
+  passwordChange: function(accountHashID, Password, callback) {
+    var modelTable = configuration.TableMAAccountModel + accountHashID
+    redisClient.hset(modelTable, configuration.ConstantAMPassword, function(err, replies) {
+      if (err)
+        callback(err, null)
+    })
+  }
 }
