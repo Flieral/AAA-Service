@@ -1,5 +1,5 @@
-var verificateAction = require('../logic/account/verificateAction')
-var payloadChecker = require('../public/payloadChecker')
+var verificateAction  = require('../logic/account/verificateAction')
+var payloadChecker    = require('../public/payloadChecker')
 
 var Input = {
   accountHashID: {
@@ -27,8 +27,8 @@ module.verificate = {
           next(error)
         }
         data.response.result = replies
+        next()
       })
     })
   }
 }
-

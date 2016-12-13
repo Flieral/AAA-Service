@@ -10,8 +10,8 @@ exports.default = {
 			],
 			post:[
 				{path: '/account/register'									, action: 'register'},
-				{path: '/account/confirm'										, action: 'confirm'},
-				{path: '/account/validate'									, action: 'validate'}
+				{path: '/account/confirm/:accountHashID'		, action: 'confirm'},
+				{path: '/account/verificate/:accountHashID'	, action: 'verificate'}
 			],
 			delete:[
 

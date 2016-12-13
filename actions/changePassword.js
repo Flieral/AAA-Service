@@ -1,21 +1,21 @@
-var loginAction = require ('../logic/account/loginAction.js')
-var suspensionChecker = require ('../logic/account/suspensionChecker.js')
-var attemptChecker = require ('../logic/account/attemptChecker.js')
-var networkChecker = require ('../logic/account/networkChecker.js')
-var changePassword = require ('../logic/account/passwordChange.js')
+var loginAction     = require ('../logic/account/loginAction')
+var attemptChecker  = require ('../logic/account/attemptChecker')
+var networkChecker  = require ('../logic/account/networkChecker')
+var changePassword  = require ('../logic/account/passwordChange')
+var suspensionChecker = require ('../logic/account/suspensionChecker')
 
 var Input: {
   changePasswordObject: {
     required: true,
     validator: function(param, connection, actionTemplate) {
       if(!param.accountModel.user)
-        return 'email key missing'
+        return ('user' + configuration.message.missingKey)
       if(!param.accountModel.password)
-        return 'password is missing'
+        return ('password' + configuration.message.missingKey)
       if(!param.accountModel.option)
-        return 'option is missing'
+        return ('option' + configuration.message.missingKey)
       if(!param.accountModel.newPassword)
-        return 'new password is missing'
+        return ('newPassword' + configuration.message.missingKey)
       return true
     },
     formatter: function(param, connection, actionTemplate) {
@@ -27,15 +27,17 @@ var Input: {
 exports.changePassword = {
   name: 'Login',
   description: 'Login process',
-  inputs: Input
+  inputs: Input,
 
   run: function(api, data, next)
   {
-    changePassword.startPasswordChanging(data.params.accountModel, function(err, replies) {
+    changePassword.startPasswordChanging(data.params.changePasswordObject.accountModel, function(err, replies) {
         if (err) {
           data.response.error = error.error
           next(error)
         }
         data.response.result = replies
+        next()
     })
   }
+}

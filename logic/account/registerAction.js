@@ -81,9 +81,5 @@ module.exports = {
       callback(err, null)
       callback(null, configuration.message.safeRegistration)
     })
-  },
-
-  confirmRegistration: function(accountHashID, callback) {
-
   }
 }

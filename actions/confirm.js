@@ -21,7 +21,7 @@ exports.confirm = {
         next(error)
       }
       data.response.result = replies
+      next()
     })
   }
 }
-

@@ -1,6 +1,6 @@
-var registerAction = require('../logic/account/registerAction')
-var userChecker = require('../logic/account/userChecker')
-var payloadChecker = require('../public/payloadChecker')
+var registerAction  = require('../logic/account/registerAction')
+var userChecker     = require('../logic/account/userChecker')
+var payloadChecker  = require('../public/payloadChecker')
 
 exports.register = {
   name: "register",
@@ -13,7 +13,7 @@ exports.register = {
         data.response.error = error.error
         next(error)
       }
-      userChecker.startCheckingUser(payload.accountModel.username, payload.accountModel.email, payload.accountModel.companyName, function(error, result) {
+      userChecker.startUserChecking(payload.accountModel, function(error, result) {
         if (error) {
           data.response.error = error.error
           next(error)
@@ -23,8 +23,8 @@ exports.register = {
             data.response.error = error.error
             next(error)
           }
-          else
-            data.response.result = replies
+          data.response.result = replies
+          next()
         })
       })
     })
