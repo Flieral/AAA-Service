@@ -1,6 +1,5 @@
 {
 	"BaseURL"	:	"http://0.0.0.0:8080/api/1/",
-	"Successful":	"Successful Operating",
 
 	"maximumAccountAttempt"	: 3,
 	"maximumBlockPeriod"		: 1000,

@@ -1,4 +1,4 @@
-var redisClient   = require('../redis_client/redisClient').getClient()
+var redisClient   = require('../../public/redisClient').getClient()
 var configuration = require('../config/configuration.json')
 
 module.exports = {
