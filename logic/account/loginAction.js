@@ -10,13 +10,13 @@ module.exports = {
     this.loginByEmail(loginObject.accountModel.user, loginObject.accountModel.password, function(err, replies) {
       if (err)
       callback(err, null)
-      callback(null, replies)
+      callback(null, configuration.message.login.successful)
     })
     else if (loginObject.accountModel.option === 'username')
     this.loginByUsername(loginObject.accountModel.user, loginObject.accountModel.password, function(err, replies) {
       if (err)
       callback(err, null)
-      callback(null, replies)
+      callback(null, configuration.message.login.successful)
     })
   },
 
@@ -25,7 +25,7 @@ module.exports = {
       if (err)
       callback(err, null)
       if (replies === 'null')
-      callback(new Error(configuration.message.user.notExistUser), null)
+      callback(new Error(configuration.message.account.notExist), null)
       this.passwordCheck(replies, password, function(err, replies) {
         if (err)
         callback(err, null)
@@ -39,7 +39,7 @@ module.exports = {
       if (err)
       callback(err, null)
       if (replies === 'null')
-      callback(new Error(configuration.message.user.notExistUser), null)
+      callback(new Error(configuration.message.account.notExist), null)
       this.passwordCheck(replies, password, function(err, replies) {
         if (err)
         callback(err, null)
@@ -54,12 +54,12 @@ module.exports = {
       if (err)
       callback(err, null)
       if (replies === password)
-      callback(null, configuration.message.login.successfulLogin)
+      callback(null, configuration.message.password.right)
       else
-      attemptChecker.incrementUserAttempt(accountHashID, function(err, replies) {
+      attemptChecker.incrementAccountAttempt(accountHashID, function(err, replies) {
         if (err)
         callback(err, null)
-        callback(null, replies)
+        callback(null, configuration.message.account.attempt)
       })
     }
   }

@@ -3,12 +3,12 @@ var configuration = require('../config/configuration.json')
 var sessionManager= require('./sessionManager')
 
 module.exports = {
-	incrementUserAttempt: function(accountHashID, callback) {
+	incrementAccountAttempt: function(accountHashID, callback) {
 		var modelTable = configuration.TableMAAccountModel + accountHashID
 		redisClient.hincrby(modelTable, configuration.ConstantAMAttempt, 1, function(err, replies) {
 			if (err)
 			callback(err, null)
-			this.checkUserAttempt(accountHashID, function(err, replies) {
+			this.checkAccountAttempt(accountHashID, function(err, replies) {
 				if (err)
 				callback(err, null)
 				callback(null, replies)
@@ -16,47 +16,48 @@ module.exports = {
 		})
 	},
 
-	resetUserAttempt: function(accountHashID, callback) {
+	resetAccountAttempt: function(accountHashID, callback) {
 		var modelTable = configuration.TableMAAccountModel + accountHashID
 		redisClient.hset(modelTable, configuration.ConstantAMAttempt, 0, function(err, replies) {
 			if (err)
 			callback(err, null)
+			callback(null, replies)
 		})
 	},
 
-	checkUserAttempt: function(accountHashID, callback) {
+	checkAccountAttempt: function(accountHashID, callback) {
 		var modelTable = configuration.TableMAAccountModel + accountHashID
 		redisClient.hget(modelTable, configuration.ConstantAMAttempt, function(err, replies) {
 			if (err)
 			callback(err, null)
-			if (replies >= configuration.MaximumUserAttempt) {
-				redisClient.set(blackListTable, accountHashID, 'EX', configuration.MaximumblackPeriod, 'NX', function(err, replies) {
+			if (replies >= configuration.maximumAccountAttempt) {
+				redisClient.set(blockListTable, accountHashID, 'EX', configuration.maximumBlockPeriod, 'NX', function(err, replies) {
 					if (err)
 					callback(err, null)
-					this.resetUserAttempt(accountHashID, function(err, replies) {
+					this.resetAccountAttempt(accountHashID, function(err, replies) {
 						if (err)
 						callback(err, null)
 						sessionManager.terminateSessionForAccount(accountHashID, function(err, replies) {
 							if (err)
 							callback(err, null)
-							callback(new Error(configuration.message.user.black), null)
+							callback(new Error(configuration.message.account.block), null)
 						})
 					})
 				})
 			}
-			callback(null, configuration.message.user.safe)
+			callback(null, configuration.message.account.safe)
 		})
 	},
 
-	checkUserBlack: function(accountHashID, callback) {
-		var blackListTable = configuration.TableMAAccountModelBlackList + accountHashID
-		redisClient.get(blackListTable, function(err, replies) {
+	checkAccountBlock: function(accountHashID, callback) {
+		var blockListTable = configuration.TableMAAccountModelBlockList + accountHashID
+		redisClient.get(blockListTable, function(err, replies) {
 			if (err)
 			callback(err, null)
 			if (replies === 'null')
-			callback(null, configuration.message.user.safe)
+			callback(null, configuration.message.account.safe)
 			else
-			callback(new Error(configuration.message.user.black), null)
+			callback(new Error(configuration.message.account.block), null)
 		})
 	}
 }

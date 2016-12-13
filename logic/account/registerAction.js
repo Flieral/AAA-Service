@@ -1,19 +1,20 @@
 var redisClient   = require('../redis_client/redisClient').getClient()
 var configuration = require('../config/configuration.json')
+var utility       = require('../../public/utility')
 
 module.exports = {
   register: function(payload, callback) {
     var tableName
-    var accountHashID = payload.accountModel.companyName + "-" + payload.accountModel.username
+    var accountHashID = utility.generateUniqueHashID()
     var score = payload[configuration.ConstantMMTime]
     var multi = redisClient.multi()
 
-    payload.accountModel.registrationStatus  = configuration.Enum.RegistrationStatusType.Pending
-    payload.accountModel.suspendStatus       = configuration.Enum.SuspendType.None
+    payload.accountModel.registrationStatus  = configuration.enum.registrationStatusType.pending
+    payload.accountModel.suspendStatus       = configuration.enum.suspendStatusType.none
     payload.accountModel.time                = payload.time
     payload.accountModel.webhookBaseURL      = 'http://' + payload.accountModel.companyName + '.Flieral.com'
     payload.accountModel.attempt = 0
-    payload.accountModel.message = configuration.message.registerUser
+    payload.accountModel.message = configuration.message.interaction.registerAccount
 
     payload.networkModel.country     = payload.accountModel.registrationCountry
     payload.networkModel.macAddress  = payload.accountModel.registrationMacAddress
@@ -65,21 +66,21 @@ module.exports = {
     multi.zadd(tableName, score, accountHashID)
 
     /* Add to accountModel:RegistrationStatusType1: */
-    tableName 	= configuration.TableAccountModel.RegistrationStatus[payload[configuration.ConstantAMRegistrationStatus]]
+    tableName 	= configuration.TableAccountModel.registrationStatus[payload[configuration.ConstantAMRegistrationStatus]]
     multi.zadd(tableName, score, accountHashID)
 
     /* Add to accountModel:SuspendStatusType1: */
-    tableName 	= configuration.TableAccountModel.SuspendStatus[payload[configuration.ConstantAMSuspendStatus]]
+    tableName 	= configuration.TableAccountModel.suspendStatusType[payload[configuration.ConstantAMSuspendStatus]]
     multi.zadd(tableName, score, accountHashID)
 
     /* Add to accountModel:CountryType1: */
-    tableName 	= configuration.TableAccountModel.RegistrationCountry[payload[configuration.ConstantAMRegistrationCountry]]
+    tableName 	= utility.mapCountryToTable(payload[configuration.ConstantAMRegistrationCountry])
     multi.zadd(tableName, score, accountHashID)
 
     multi.exec(function (err, replies) {
       if (err)
       callback(err, null)
-      callback(null, configuration.message.safeRegistration)
+      callback(null, configuration.message.registerAccount.successful)
     })
   }
 }

@@ -9,13 +9,13 @@ var Input: {
     required: true,
     validator: function(param, connection, actionTemplate) {
       if(!param.accountModel.user)
-        return ('user' + configuration.message.missingKey)
+        return ('user' + ' ' + configuration.message.missingKey)
       if(!param.accountModel.password)
-        return ('password' + configuration.message.missingKey)
+        return ('password' + ' ' + configuration.message.missingKey)
       if(!param.accountModel.option)
-        return ('option' + configuration.message.missingKey)
+        return ('option' + ' ' + configuration.message.missingKey)
       if(!param.accountModel.newPassword)
-        return ('newPassword' + configuration.message.missingKey)
+        return ('newPassword' + ' ' + configuration.message.missingKey)
       return true
     },
     formatter: function(param, connection, actionTemplate) {
@@ -29,12 +29,11 @@ exports.changePassword = {
   description: 'Login process',
   inputs: Input,
 
-  run: function(api, data, next)
-  {
+  run: function(api, data, next) {
     changePassword.startPasswordChanging(data.params.changePasswordObject.accountModel, function(err, replies) {
         if (err) {
-          data.response.error = error.error
-          next(error)
+          data.response.error = err.error
+          next(err)
         }
         data.response.result = replies
         next()

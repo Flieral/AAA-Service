@@ -6,7 +6,7 @@ module.exports = {
   renewSessionForAccount: function(accountHashID, callback) {
     var sessionTable = configuration.TableMAAccountModelUserToken + accountHashID
     var sessionHashID = utility.generateUniqueHashID()
-    redisClient.set(sessionTable, sessionHashID, 'EX', configuration.MaximumSessionLength, 'NX', function(err, replies) {
+    redisClient.set(sessionTable, sessionHashID, 'EX', configuration.maximumSessionLength, 'NX', function(err, replies) {
       if (err)
       callback(err, null)
       callback(null, configuration.message.session.renew)

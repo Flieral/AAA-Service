@@ -8,20 +8,20 @@ exports.register = {
 
   run: function(api, data, next) {
     var payload = JSON.parse(JSON.stringify(data.connection.rawConnection.params.body))
-    payloadChecker.startChecking(payload, function(error, result) {
-      if (error) {
-        data.response.error = error.error
-        next(error)
+    payloadChecker.startChecking(payload, function(err, result) {
+      if (err) {
+        data.response.error = err.error
+        next(err)
       }
-      userChecker.startUserChecking(payload.accountModel, function(error, result) {
-        if (error) {
-          data.response.error = error.error
-          next(error)
+      userChecker.startUserChecking(payload.accountModel, function(err, result) {
+        if (err) {
+          data.response.error = err.error
+          next(err)
         }
-        registerAction.register(payload, function (error, replies) {
-          if (error) {
-            data.response.error = error.error
-            next(error)
+        registerAction.register(payload, function (err, replies) {
+          if (err) {
+            data.response.error = err.error
+            next(err)
           }
           data.response.result = replies
           next()

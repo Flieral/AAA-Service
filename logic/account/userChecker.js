@@ -25,9 +25,9 @@ module.exports = {
 			if (err)
 				callback(err, null)
 			if (replies === 'null')
-				callback(null, configuration.message.user.notExistUser)
+				callback(null, configuration.message.account.notExist)
 			else
-				callback(new Error(configuration.message.user.existUser), null)
+				callback(new Error(configuration.message.account.exist), null)
 		})
 	},
 
@@ -36,9 +36,9 @@ module.exports = {
 			if (err)
 				callback(err, null)
 			if (replies === 'null')
-				callback(null, configuration.message.user.notExistUser)
+				callback(null, configuration.message.account.notExist)
 			else
-				callback(new Error(configuration.message.user.existUser), null)
+				callback(new Error(configuration.message.account.exist), null)
 		})
 	},
 
@@ -47,9 +47,9 @@ module.exports = {
 			if (err)
 				callback(err, null)
 			if (replies === 'null')
-				callback(null, configuration.message.user.notExistUser)
+				callback(null, configuration.message.account.notExist)
 			else
-				callback(new Error(configuration.message.user.existUser), null)
+				callback(new Error(configuration.message.account.exist), null)
 		})
 	},
 
