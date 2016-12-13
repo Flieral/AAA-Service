@@ -2,12 +2,13 @@
 	"BaseURL"	:	"http://0.0.0.0:8080/api/1/",
 	"Successful":	"Successful Operating",
 
-	"MaximumUserAttempt"		: 3,
-	"MaximumBlockPeriod"		: 1000,
-	"MaximumSessionLength"	: 1000,
+	"maximumAccountAttempt"	: 3,
+	"maximumBlockPeriod"		: 1000,
+	"maximumSessionLength"	: 1000,
 
 	"TableMAAccountModelUserToken"		: "AccountModel:UserToken:",
-	"TableMAAccountModelBlackList"		: "AccountModel:BlackList:",
+	"TableMAAccountModelBlockList"		: "AccountModel:BlockList:",
+	"TableMAAccountModelVerificate"		: "AccountModel:Verificate:",
 
 	"ConstantAMEmail"					: "Email",
 	"ConstantAMCompanyName"		: "CompanyName",
@@ -37,36 +38,71 @@
 
 	"TableAccountModel" :
 	{
-		"RegistrationStatus"	:
+		"registrationStatus"	:
 		{
-			"Sample1"	: 	"AccountModel:RegistrationStatusample1:",
-			"Sample2"	: 	"AccountModel:RegistrationStatusSample2:"
+			"pending"	: 	"AccountModel:RegistrationStatuPending:",
+			"approved"	: 	"AccountModel:RegistrationStatusApproved:"
 		},
-		"SuspendStatus"	:
+		"suspendStatusType"	:
 		{
-			"Sample1"	: 	"AccountModel:SuspendStatusSample1:",
-			"Sample2"	: 	"AccountModel:SuspendStatusSample2:"
+			"none"	: 	"AccountModel:SuspendStatusNone:",
+			"suspend"	: 	"AccountModel:SuspendStatusSuspend:"
 		},
-		"RegistrationCountry"	:
-		{
-			"Sample1"	: 	"AccountModel:RegistrationCountrySample1:",
-			"Sample2"	: 	"AccountModel:RegistrationCountrySample2:"
+		"registrationCountry" : "AccountModel:RegistrationCountry"
+	},
+
+	"enum" : {
+		"registrationStatusType": {
+			"pending"	: "pending",
+			"approved"	: "approved"
+		},
+		"suspendStatusType": {
+			"none"	: "none",
+			"suspend"	: "suspend"
 		}
 	},
 
-	"Enums" :
-	{
-		"CountryType": {
-			"Sample1"	: "Sample1",
-			"Sample2"	: "Sample2"
+	"message" : {
+		"missingKey" : "Key is Required",
+		"interaction" : {
+			"registerAccount" : "You should Verify your Email Address"
 		},
-		"RegistrationStatusType": {
-			"Sample1"	: "Sample1",
-			"Sample2"	: "Sample2"
+		"account" : {
+			"safe" : "100100100",
+			"block" : "100100101",
+			"exists" : "100100102",
+			"notExist" : "100100103",
+			"attempt" : "100100104",
+			"suspend" : "100100105"
 		},
-		"SuspendStatusType": {
-			"Sample1"	: "Sample1",
-			"Sample2"	: "Sample2"
+		"changePassword" : {
+			"successful" : "100300100",
+			"failed" : "100300101"
+		},
+		"password" : {
+			"right" : "100310100",
+			"wrong" : "100310101"
+		},
+		"confirm" : {
+			"successful" : "100320100",
+			"failed" : "100320101"
+		},
+		"network" : {
+			"safe" : "100330100",
+			"changed" : "100330101",
+			"safeAdd" : "100330102"
+		},
+		"registerAccount" : {
+			"successful" : "100340100",
+			"failed" : "100340101"
+		},
+		"session" : {
+			"renew" : "100350100",
+			"terminate" : "100350101"
+		},
+		"verificate" : {
+			"successful" : "100360100",
+			"failed" : "100360101"
 		}
 	}
 }
