@@ -1,5 +1,5 @@
 var redisClient   = require('../../public/redisClient').getClient()
-var configuration = require('../config/configuration.json')
+var configuration = require('../../config/configuration.json')
 var utility       = require('../../public/utility')
 
 module.exports = {
@@ -40,7 +40,7 @@ module.exports = {
         callback(null, replies)
       })
     })
-  }
+  },
 
   checkAccountSuspension: function(accountHashID, callback) {
     var modelTable = configuration.TableMAAccountModel + accountHashID
@@ -51,6 +51,6 @@ module.exports = {
       callback(null, configuration.message.account.safe)
       else
       callback(new Error(configuration.message.account.suspend), null)
-    }
+    })
   }
 }

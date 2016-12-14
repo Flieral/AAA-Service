@@ -1,10 +1,11 @@
 var loginAction     = require ('../logic/account/loginAction')
 var attemptChecker  = require ('../logic/account/attemptChecker')
 var networkChecker  = require ('../logic/account/networkChecker')
-var changePassword  = require ('../logic/account/passwordChange')
+var changePassword  = require ('../logic/account/changePasswordAction')
 var suspensionChecker = require ('../logic/account/suspensionChecker')
+var configuration = require('../config/configuration.json')
 
-var Input: {
+var Input = {
   changePasswordObject: {
     required: true,
     validator: function(param, connection, actionTemplate) {

@@ -1,5 +1,5 @@
 var redisClient   = require('../../public/redisClient').getClient()
-var configuration = require('../config/configuration.json')
+var configuration = require('../../config/configuration.json')
 
 module.exports = {
   confirm: function(accountHashID, callback) {

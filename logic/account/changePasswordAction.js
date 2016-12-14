@@ -1,6 +1,6 @@
 var redisClient   = require('../../public/redisClient').getClient()
-var configuration = require('../config/configuration.json')
-var userChecker   = require('./userChcker')
+var configuration = require('../../config/configuration.json')
+var userChecker   = require('./userChecker')
 
 module.exports = {
   startPasswordChanging: function(accountModelObject, callback) {
@@ -19,7 +19,7 @@ module.exports = {
             callback(null, replies)
           })
         })
-      }
+      })
     }
     else if (accountModelObject.option === 'email') {
       userChecker.getAccountIdentifierByEmail(accountModelObject.user, function (err, replies) {
@@ -35,24 +35,24 @@ module.exports = {
             callback(null, replies)
           })
         })
-      }
-    }
+      })
+  	}
   },
 
   passwordCheck: function(accountHashID, password, callback) {
     var modelTable = configuration.TableMAAccountModel + accountHashID
     redisClient.hget(modelTable, configuration.ConstantAMPassword, function(err, replies) {
       if (err)
-      callback(err, null)
+      	callback(err, null)
       if (replies === password)
-      callback(null, configuration.message.password.right)
+      	callback(null, configuration.message.password.right)
       else
-      attemptChecker.incrementAccountAttempt(accountHashID, function(err, replies) {
-        if (err)
-        callback(err, null)
-        callback(null, configuration.message.account.attempt)
+      	attemptChecker.incrementAccountAttempt(accountHashID, function(err, replies) {
+        	if (err)
+        		callback(err, null)
+        	callback(null, configuration.message.account.attempt)
       })
-    }
+    })
   },
 
   passwordChange: function(accountHashID, Password, callback) {

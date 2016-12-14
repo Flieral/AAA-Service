@@ -1,5 +1,5 @@
 var redisClient   = require('../../public/redisClient').getClient()
-var configuration = require('../config/configuration.json')
+var configuration = require('../../config/configuration.json')
 var utility       = require('../../public/utility')
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
       if (err)
       callback(err, null)
       callback(null, configuration.message.session.renew)
-    }
+    })
   },
 
   terminateSessionForAccount: function(accountHashID, callback) {

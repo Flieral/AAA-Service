@@ -4,7 +4,7 @@ var attemptChecker    = require ('../logic/account/attemptChecker')
 var networkChecker    = require ('../logic/account/networkChecker')
 var sessionManager    = require ('../logic/account/sessionManager')
 
-var Input: {
+var Input = {
   loginObject: {
     required: true,
     validator: function(param, connection, actionTemplate) {
@@ -35,7 +35,7 @@ var Input: {
 exports.login = {
   name: 'Login',
   description: 'Login process',
-  inputs: Input
+  inputs: Input,
 
   run: function(api, data, next) {
     var accountHashID
@@ -67,8 +67,8 @@ exports.login = {
               }
               data.response.result = replies
               next()
-            }
-          }
+            })
+          })
         })
       })
     })

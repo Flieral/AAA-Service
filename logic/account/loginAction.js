@@ -1,7 +1,7 @@
 var redisClient   = require('../../public/redisClient').getClient()
-var configuration = require('../config/configuration.json')
+var configuration = require('../../config/configuration.json')
 var utility       = require('../../public/utility')
-var userChecker   = require('../logic/account/userChecker')
+var userChecker   = require('./userChecker')
 var attemptChecker= require('./attemptChecker')
 
 module.exports = {
@@ -61,6 +61,6 @@ module.exports = {
         callback(err, null)
         callback(null, configuration.message.account.attempt)
       })
-    }
+    })
   }
 }

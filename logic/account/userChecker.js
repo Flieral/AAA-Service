@@ -1,5 +1,5 @@
 var redisClient   = require('../../public/redisClient').getClient()
-var configuration = require('../config/configuration.json')
+var configuration = require('../../config/configuration.json')
 
 module.exports = {
 	startUserChecking: function(accountModelObject, callback){
@@ -17,7 +17,7 @@ module.exports = {
 							callback(null, replies)
 						})
 				})
-		}
+		})
 	},
 
 	checkUserExistenceByEmail: function(email, callback) {
@@ -59,7 +59,7 @@ module.exports = {
 			if (err)
 				callback(err, null)
 			callback(null, replies)
-		}
+		})
 	},
 
 	getAccountIdentifierByUsername: function(username, callback) {
@@ -68,7 +68,7 @@ module.exports = {
 			if (err)
 				callback(err, null)
 			callback(null, replies)
-		}
+		})
 	},
 
 	getAccountIdentifierByCompanyName: function(companyName, callback) {
@@ -77,6 +77,6 @@ module.exports = {
 			if (err)
 				callback(err, null)
 			callback(null, replies)
-		}
-	}
+		})
+	}	
 }
