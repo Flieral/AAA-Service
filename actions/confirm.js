@@ -15,7 +15,7 @@ exports.confirm = {
   input: Input,
 
   run: function(api, data, next) {
-    confirmAction.confirm(data.params.accountHashID, function (err, replies) {
+    confirmAction.confirm(api.redisClient, data.params.accountHashID, function (err, replies) {
       if (err) {
         data.response.error = err.error
         next(err)

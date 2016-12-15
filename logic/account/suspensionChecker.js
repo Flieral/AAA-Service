@@ -1,9 +1,8 @@
-var redisClient   = require('../../public/redisClient').getClient()
 var configuration = require('../../config/configuration.json')
 var utility       = require('../../public/utility')
 
 module.exports = {
-  addToSuspensionList: function(accountHashID, suspendType, callback) {
+  addToSuspensionList: function(redisClient, accountHashID, suspendType, callback) {
     var suspendTable = configuration.TableAccountModel.suspendStatusType[suspendType]
     var modelTable = configuration.TableMAAccountModel + accountHashID
     var score = utility.getUnixTimeStamp()
@@ -17,7 +16,7 @@ module.exports = {
     })
   },
 
-  removeFromSuspensionList: function(accountHashID, suspendType, callback) {
+  removeFromSuspensionList: function(redisClient, accountHashID, suspendType, callback) {
     var suspendTable = configuration.TableAccountModel.suspendStatusType[suspendType]
     var modelTable = configuration.TableMAAccountModel + accountHashID
     var multi = redisClient.multi()
@@ -30,11 +29,11 @@ module.exports = {
     })
   },
 
-  changeSuspensionType: function(accountHashID, oldSuspendType, newSuspendType, callback) {
-    this.removeFromSuspensionList(accountHashID, oldSuspendType, function(err, replies) {
+  changeSuspensionType: function(redisClient, accountHashID, oldSuspendType, newSuspendType, callback) {
+    this.removeFromSuspensionList(redisClient, accountHashID, oldSuspendType, function(err, replies) {
       if (err)
       callback(err, null)
-      this.addToSuspensionList(accountHashID, newSuspendType, function(err, replies) {
+      this.addToSuspensionList(redisClient, accountHashID, newSuspendType, function(err, replies) {
         if (err)
         callback(err, null)
         callback(null, replies)
@@ -42,7 +41,7 @@ module.exports = {
     })
   },
 
-  checkAccountSuspension: function(accountHashID, callback) {
+  checkAccountSuspension: function(redisClient, accountHashID, callback) {
     var modelTable = configuration.TableMAAccountModel + accountHashID
     redisClient.hget(modelTable, configuration.ConstantAMSuspendStatus, function(err, replies) {
       if (err)

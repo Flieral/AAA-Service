@@ -1,16 +1,15 @@
-var redisClient   = require('../../public/redisClient').getClient()
 var configuration = require('../../config/configuration.json')
 var utility       = require('../../public/utility')
 
 module.exports = {
-  startNetworkChecking: function (accountHashID, ipAddress, networkModel, callback) {
-    checkAccountNetworkChangeByIPAddress(accountHashID, ipAddress, function(err, replies) {
+  startNetworkChecking: function (redisClient, accountHashID, ipAddress, networkModel, callback) {
+    this.checkAccountNetworkChangeByIPAddress(redisClient, accountHashID, ipAddress, function(err, replies) {
       if (err)
       callback(err, null)
-      checkAccountNetworkChangeByCountry(accountHashID, networkModel.country, function(err, replies) {
+      this.checkAccountNetworkChangeByCountry(redisClient, accountHashID, networkModel.country, function(err, replies) {
         if (err)
         callback(err, null)
-        checkAccountNetworkChangeByMacAddress(accountHashID, networkModel.macAddress, function(err, replies) {
+        this.checkAccountNetworkChangeByMacAddress(redisClient, accountHashID, networkModel.macAddress, function(err, replies) {
           if (err)
           callback(err, null)
           callback(null, replies)
@@ -19,7 +18,7 @@ module.exports = {
     })
   },
 
-  addIPAddressToSafeIPAddress: function(accountHashID, ipAddress, networkModel, callback) {
+  addIPAddressToSafeIPAddress: function(redisClient, accountHashID, ipAddress, networkModel, callback) {
     var ipListTable = configuration.TableMSNetworkPrivacyIPList + accountHashID
     var score = utility.getUnixTimeStamp()
     var multi = redisClient.multi()
@@ -38,7 +37,7 @@ module.exports = {
     })
   },
 
-  checkAccountNetworkChangeByCountry: function(accountHashID, countryType, callback) {
+  checkAccountNetworkChangeByCountry: function(redisClient, accountHashID, countryType, callback) {
     var modelTable = configuration.TableMAAccountModel + accountHashID
     redisClient.hget(modelTable, configuration.ConstantAMRegistrationCountry, function(err, replies) {
       if (err)
@@ -49,7 +48,7 @@ module.exports = {
     })
   },
 
-  checkAccountNetworkChangeByIPAddress: function(accountHashID, ipAddress, callback) {
+  checkAccountNetworkChangeByIPAddress: function(redisClient, accountHashID, ipAddress, callback) {
     var ipListTable = configuration.TableMSNetworkPrivacyIPList + accountHashID
     redisClient.zscore(ipListTable, ipAddress, function(err, replies) {
       if (err)
@@ -60,7 +59,7 @@ module.exports = {
     })
   },
 
-  checkAccountNetworkChangeByMacAddress: function(accountHashID, macAddress, callback) {
+  checkAccountNetworkChangeByMacAddress: function(redisClient, accountHashID, macAddress, callback) {
     var modelTable = configuration.TableMAAccountModel + accountHashID
     redisClient.hget(modelTable, configuration.ConstantAMRegistrationMacAddress, function(err, replies) {
       if (err)

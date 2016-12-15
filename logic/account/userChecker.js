@@ -1,17 +1,16 @@
-var redisClient   = require('../../public/redisClient').getClient()
 var configuration = require('../../config/configuration.json')
 
 module.exports = {
-	startUserChecking: function(accountModelObject, callback){
-		this.checkUserExistenceByUsername(accountModelObject.accountModel.username, function(err, replies) {
+	startUserChecking: function(redisClient, accountModelObject, callback){
+		this.checkUserExistenceByUsername(redisClient, accountModelObject.accountModel.username, function(err, replies) {
 			if (err)
 				callback(err, null)
 			else
-				this.checkUserExistenceByEmail(accountModelObject.accountModel.email, function(err, replies) {
+				this.checkUserExistenceByEmail(redisClient, accountModelObject.accountModel.email, function(err, replies) {
 					if (err)
 						callback(err, null)
 					else
-						this.checkUserExistenceByCompanyName(accountModelObject.accountModel.companyName, function(err, replies) {
+						this.checkUserExistenceByCompanyName(redisClient, accountModelObject.accountModel.companyName, function(err, replies) {
 							if (err)
 								callback(err, null)
 							callback(null, replies)
@@ -20,8 +19,8 @@ module.exports = {
 		})
 	},
 
-	checkUserExistenceByEmail: function(email, callback) {
-		this.getAccountIdentifierByEmail(email, function(err, replies) {
+	checkUserExistenceByEmail: function(redisClient, email, callback) {
+		this.getAccountIdentifierByEmail(redisClient, email, function(err, replies) {
 			if (err)
 				callback(err, null)
 			if (replies === 'null')
@@ -31,8 +30,8 @@ module.exports = {
 		})
 	},
 
-	checkUserExistenceByUsername: function(username, callback) {
-		this.getAccountIdentifierByUsername(username, function(err, replies) {
+	checkUserExistenceByUsername: function(redisClient, username, callback) {
+		this.getAccountIdentifierByUsername(redisClient, username, function(err, replies) {
 			if (err)
 				callback(err, null)
 			if (replies === 'null')
@@ -42,8 +41,8 @@ module.exports = {
 		})
 	},
 
-	checkUserExistenceByCompanyName: function(companyName, callback) {
-		this.getAccountIdentifierByCompanyName(companyName, function(err, replies) {
+	checkUserExistenceByCompanyName: function(redisClient, companyName, callback) {
+		this.getAccountIdentifierByCompanyName(redisClient, companyName, function(err, replies) {
 			if (err)
 				callback(err, null)
 			if (replies === 'null')
@@ -53,7 +52,7 @@ module.exports = {
 		})
 	},
 
-	getAccountIdentifierByEmail: function(email, callback) {
+	getAccountIdentifierByEmail: function(redisClient, email, callback) {
 		var emailTable = configuration.TableMSAccountModelEmail + email
 		redisClient.get(emailTable, function (err, replies) {
 			if (err)
@@ -62,7 +61,7 @@ module.exports = {
 		})
 	},
 
-	getAccountIdentifierByUsername: function(username, callback) {
+	getAccountIdentifierByUsername: function(redisClient, username, callback) {
 		var userTable = configuration.TableMSAccountModelUsername + username
 		redisClient.get(userTable, function (err, replies) {
 			if (err)
@@ -71,7 +70,7 @@ module.exports = {
 		})
 	},
 
-	getAccountIdentifierByCompanyName: function(companyName, callback) {
+	getAccountIdentifierByCompanyName: function(redisClient, companyName, callback) {
 		var companyTable = configuration.TableMSAccountModelCompanyName + companyName
 		redisClient.get(companyTable, function (err, replies) {
 			if (err)

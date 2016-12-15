@@ -1,8 +1,7 @@
-var redisClient   = require('../../public/redisClient').getClient()
 var configuration = require('../../config/configuration.json')
 
 module.exports = {
-  verificate: function(accountHashID, option, ipAddress, networkModel, callback) {
+  verificate: function(redisClient, accountHashID, option, ipAddress, networkModel, callback) {
     var verificateTable = configuration.TableMAAccountModelVerificate + accountHashID
     redisClient.get(verificateTable, function(err, replies) {
       if (err)

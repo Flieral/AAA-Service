@@ -1,32 +1,31 @@
-var redisClient   = require('../../public/redisClient').getClient()
 var configuration = require('../../config/configuration.json')
 var utility       = require('../../public/utility')
 var userChecker   = require('./userChecker')
 var attemptChecker= require('./attemptChecker')
 
 module.exports = {
-  login: function(loginObject, callback) {
+  login: function(redisClient, loginObject, callback) {
     if (loginObject.accountModel.option === 'email')
-    this.loginByEmail(loginObject.accountModel.user, loginObject.accountModel.password, function(err, replies) {
+    this.loginByEmail(redisClient, loginObject.accountModel.user, loginObject.accountModel.password, function(err, replies) {
       if (err)
       callback(err, null)
       callback(null, configuration.message.login.successful)
     })
     else if (loginObject.accountModel.option === 'username')
-    this.loginByUsername(loginObject.accountModel.user, loginObject.accountModel.password, function(err, replies) {
+    this.loginByUsername(redisClient, loginObject.accountModel.user, loginObject.accountModel.password, function(err, replies) {
       if (err)
       callback(err, null)
       callback(null, configuration.message.login.successful)
     })
   },
 
-  loginByUsername: function(username, password, callback) {
-    userChecker.getAccountIdentifierByUsername(username, function(err, replies) {
+  loginByUsername: function(redisClient, username, password, callback) {
+    userChecker.getAccountIdentifierByUsername(redisClient, username, function(err, replies) {
       if (err)
       callback(err, null)
       if (replies === 'null')
       callback(new Error(configuration.message.account.notExist), null)
-      this.passwordCheck(replies, password, function(err, replies) {
+      this.passwordCheck(redisClient, replies, password, function(err, replies) {
         if (err)
         callback(err, null)
         callback(null, result)
@@ -34,13 +33,13 @@ module.exports = {
     })
   },
 
-  loginByEmail: function(email, password, callback) {
-    userChecker.getAccountIdentifierByEmail(email, function(err, replies) {
+  loginByEmail: function(redisClient, email, password, callback) {
+    userChecker.getAccountIdentifierByEmail(redisClient, email, function(err, replies) {
       if (err)
       callback(err, null)
       if (replies === 'null')
       callback(new Error(configuration.message.account.notExist), null)
-      this.passwordCheck(replies, password, function(err, replies) {
+      this.passwordCheck(redisClient, replies, password, function(err, replies) {
         if (err)
         callback(err, null)
         callback(null, result)
@@ -48,7 +47,7 @@ module.exports = {
     })
   },
 
-  passwordCheck: function(accountHashID, password, callback) {
+  passwordCheck: function(redisClient, accountHashID, password, callback) {
     var modelTable = configuration.TableMAAccountModel + accountHashID
     redisClient.hget(modelTable, configuration.ConstantAMPassword, function(err, replies) {
       if (err)
@@ -56,7 +55,7 @@ module.exports = {
       if (replies === password)
       callback(null, configuration.message.password.right)
       else
-      attemptChecker.incrementAccountAttempt(accountHashID, function(err, replies) {
+      attemptChecker.incrementAccountAttempt(redisClient, accountHashID, function(err, replies) {
         if (err)
         callback(err, null)
         callback(null, configuration.message.account.attempt)

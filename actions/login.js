@@ -39,28 +39,28 @@ exports.login = {
 
   run: function(api, data, next) {
     var accountHashID
-    loginAction.login(data.params.loginObject.accountModel, function(err, replies){
+    loginAction.login(api.redisClient, data.params.loginObject.accountModel, function(err, replies){
       if(err){
         data.response.error = err.error
         next(err)
       }
       accountHashID = replies
-      suspentionChecker.checkAccountSuspension(accountHashID, function(err, replies) {
+      suspensionChecker.checkAccountSuspension(api.redisClient, accountHashID, function(err, replies) {
         if(err) {
           data.response.error = err.error
           next(err)
         }
-        attemptChecker.checkUserBlock(accountHashID, function(err, replies) {
+        attemptChecker.checkAccountBlock(api.redisClient, accountHashID, function(err, replies) {
           if(err) {
             data.response.error = err.error
             next(err)
           }
-          networkChecker.startNetworkChecking(accountHashID, data.params.loginObject.ipAddress, data.params.loginObject.networkModel, function(err, replies) {
+          networkChecker.startNetworkChecking(api.redisClient, accountHashID, data.params.loginObject.ipAddress, data.params.loginObject.networkModel, function(err, replies) {
             if(err) {
               data.response.error = err.error
               next(err)
             }
-            sessionManager.renewSessionForAccount(accountHashID, function(err, replies) {
+            sessionManager.renewSessionForAccount(api.redisClient, accountHashID, function(err, replies) {
               if(err) {
                 data.response.error = err.error
                 next(err)

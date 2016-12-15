@@ -1,9 +1,8 @@
-var redisClient   = require('../../public/redisClient').getClient()
 var configuration = require('../../config/configuration.json')
 var utility       = require('../../public/utility')
 
 module.exports = {
-  register: function(payload, callback) {
+  register: function(redisClient, payload, callback) {
     var tableName
     var accountHashID = utility.generateUniqueHashID()
     var score = payload[configuration.ConstantMMTime]

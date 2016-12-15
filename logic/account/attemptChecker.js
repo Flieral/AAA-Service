@@ -1,14 +1,13 @@
-var redisClient   = require('../../public/redisClient').getClient()
 var configuration = require('../../config/configuration.json')
 var sessionManager= require('./sessionManager')
 
 module.exports = {
-	incrementAccountAttempt: function(accountHashID, callback) {
+	incrementAccountAttempt: function(redisClient, accountHashID, callback) {
 		var modelTable = configuration.TableMAAccountModel + accountHashID
 		redisClient.hincrby(modelTable, configuration.ConstantAMAttempt, 1, function(err, replies) {
 			if (err)
 			callback(err, null)
-			this.checkAccountAttempt(accountHashID, function(err, replies) {
+			this.checkAccountAttempt(redisClient, accountHashID, function(err, replies) {
 				if (err)
 				callback(err, null)
 				callback(null, replies)
@@ -16,7 +15,7 @@ module.exports = {
 		})
 	},
 
-	resetAccountAttempt: function(accountHashID, callback) {
+	resetAccountAttempt: function(redisClient, accountHashID, callback) {
 		var modelTable = configuration.TableMAAccountModel + accountHashID
 		redisClient.hset(modelTable, configuration.ConstantAMAttempt, 0, function(err, replies) {
 			if (err)
@@ -25,7 +24,7 @@ module.exports = {
 		})
 	},
 
-	checkAccountAttempt: function(accountHashID, callback) {
+	checkAccountAttempt: function(redisClient, accountHashID, callback) {
 		var modelTable = configuration.TableMAAccountModel + accountHashID
 		redisClient.hget(modelTable, configuration.ConstantAMAttempt, function(err, replies) {
 			if (err)
@@ -34,10 +33,10 @@ module.exports = {
 				redisClient.set(blockListTable, accountHashID, 'EX', configuration.maximumBlockPeriod, 'NX', function(err, replies) {
 					if (err)
 					callback(err, null)
-					this.resetAccountAttempt(accountHashID, function(err, replies) {
+					this.resetAccountAttempt(redisClient, accountHashID, function(err, replies) {
 						if (err)
 						callback(err, null)
-						sessionManager.terminateSessionForAccount(accountHashID, function(err, replies) {
+						sessionManager.terminateSessionForAccount(redisClient, accountHashID, function(err, replies) {
 							if (err)
 							callback(err, null)
 							callback(new Error(configuration.message.account.block), null)
@@ -49,7 +48,7 @@ module.exports = {
 		})
 	},
 
-	checkAccountBlock: function(accountHashID, callback) {
+	checkAccountBlock: function(redisClient, accountHashID, callback) {
 		var blockListTable = configuration.TableMAAccountModelBlockList + accountHashID
 		redisClient.get(blockListTable, function(err, replies) {
 			if (err)

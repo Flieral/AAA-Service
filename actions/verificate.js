@@ -16,12 +16,12 @@ module.verificate = {
   input: Input,
 
   run: function(api, data, next) {
-    payloadChecker.startChecking(payload, function(err, result) {
+    payloadChecker.startChecking(api.redisClient, payload, function(err, result) {
       if (err) {
         data.response.error = err.error
         next(err)
       }
-      verificateAction.verificate(data.params.accountHashID, payload.option, payload.ipAddress, payload.networkModel, function(err, replies) {
+      verificateAction.verificate(api.redisClient, data.params.accountHashID, payload.option, payload.ipAddress, payload.networkModel, function(err, replies) {
         if (err) {
           data.response.error = err.error
           next(err)

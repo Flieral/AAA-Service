@@ -1,0 +1,112 @@
+{
+
+  "ipAddress": {
+    "required": true,
+    "type": "string",
+    "default": 0
+  },
+
+  "register":{
+    "ipAddress": {
+      "required": true,
+      "type": "string",
+      "default": 0
+    },
+    "referralAccount": {
+      "required": true,
+      "type": "string",
+      "default": 0
+    },
+    "time": {
+      "required": true,
+      "type": "string",
+      "default": 0
+    },
+    "accountModel": {
+      "email": {
+        "required": true,
+        "type": "string",
+        "default": 0
+      },
+      "companyName": {
+        "required": true,
+        "type": "string",
+        "default": 0
+      },
+      "username": {
+        "required": true,
+        "type": "string",
+        "default": 0
+      },
+      "password": {
+        "required": true,
+        "type": "string",
+        "default": 0
+      },
+      "registrationCountry": {
+        "required": true,
+        "type": "string",
+        "default": 0,
+        "enum": "registrationCountry"
+      },
+      "registrationMacAddress": {
+        "required": true,
+        "type": "string",
+        "default": 0
+      }
+    },
+    "networkModel": {
+      "isp": {
+        "required": true,
+        "type": "string",
+        "default": 0
+      },
+      "agent": {
+        "required": true,
+        "type": "string",
+        "default": 0
+      }
+
+    }
+  },
+
+  "verificate":{
+    "accountHashID":{
+      "required": true,
+      "type": "string",
+      "default": 0
+    },
+    "option":{
+      "required": true,
+      "type": "string",
+      "default": 0
+    },
+    "ipAddress":{
+      "required": true,
+      "type": "string",
+      "default": 0
+    },
+    "networkModel":{
+      "isp": {
+        "required": true,
+        "type": "string",
+        "default": 0
+      },
+      "agent": {
+        "required": true,
+        "type": "string",
+        "default": 0      },
+      "macAddress": {
+        "required": true,
+        "type": "string",
+        "default": 0
+      },
+      "country": {
+        "required": true,
+        "type": "string",
+        "default": 0
+      }
+
+    }
+  }
+}

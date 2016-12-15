@@ -13,12 +13,12 @@ exports.register = {
         data.response.error = err.error
         next(err)
       }
-      userChecker.startUserChecking(payload.accountModel, function(err, result) {
+      userChecker.startUserChecking(api.redisClient, payload.accountModel, function(err, result) {
         if (err) {
           data.response.error = err.error
           next(err)
         }
-        registerAction.register(payload, function (err, replies) {
+        registerAction.register(api.redisClient, payload, function (err, replies) {
           if (err) {
             data.response.error = err.error
             next(err)

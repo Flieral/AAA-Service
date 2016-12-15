@@ -31,7 +31,7 @@ exports.changePassword = {
   inputs: Input,
 
   run: function(api, data, next) {
-    changePassword.startPasswordChanging(data.params.changePasswordObject.accountModel, function(err, replies) {
+    changePassword.startPasswordChanging(api.redisClient,data.params.changePasswordObject.accountModel, function(err, replies) {
         if (err) {
           data.response.error = err.error
           next(err)
