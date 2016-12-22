@@ -2,15 +2,15 @@ var configuration = require('../../config/configuration.json')
 
 module.exports = {
 	startUserChecking: function(redisClient, accountModelObject, callback){
-		this.checkUserExistenceByUsername(redisClient, accountModelObject.accountModel.username, function(err, replies) {
+		this.checkUserExistenceByUsername(redisClient, accountModelObject.username, function(err, replies) {
 			if (err)
 				callback(err, null)
 			else
-				this.checkUserExistenceByEmail(redisClient, accountModelObject.accountModel.email, function(err, replies) {
+				this.checkUserExistenceByEmail(redisClient, accountModelObject.email, function(err, replies) {
 					if (err)
 						callback(err, null)
 					else
-						this.checkUserExistenceByCompanyName(redisClient, accountModelObject.accountModel.companyName, function(err, replies) {
+						this.checkUserExistenceByCompanyName(redisClient, accountModelObject.companyName, function(err, replies) {
 							if (err)
 								callback(err, null)
 							callback(null, replies)

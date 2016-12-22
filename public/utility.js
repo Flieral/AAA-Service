@@ -27,6 +27,6 @@ module.exports =
 	mapCountryToTable: function(countryCode) {
 		for (var i = 0; i < countryList.length; i++)
 		if (countryList[i].code === countryCode)
-		return configuration.RegistrationCountry + countryCode + ':'
+		return configuration.TableAccountModel.registrationCountry + countryCode + ':'
 	}
 }

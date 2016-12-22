@@ -5,7 +5,7 @@ module.exports = {
   register: function(redisClient, payload, callback) {
     var tableName
     var accountHashID = utility.generateUniqueHashID()
-    var score = payload[configuration.ConstantMMTime]
+    var score = payload[configuration.ConstantAMTime]
     var multi = redisClient.multi()
 
     payload.accountModel.registrationStatus  = configuration.enum.registrationStatusType.pending
@@ -20,12 +20,13 @@ module.exports = {
 
     /* Add to accountModel:accountHashID */
     tableName 	= configuration.TableMAAccountModel + accountHashID
+    
     multi.hmset(tableName,
       configuration.ConstantAMEmail, payload.accountModel.email,
       configuration.ConstantAMCompanyName, payload.accountModel.companyName,
       configuration.ConstantAMUsername, payload.accountModel.username,
       configuration.ConstantAMPassword, payload.accountModel.password,
-      configuration.ConstantMMTime, payload.accountModel.time,
+      configuration.ConstantAMTime, payload.accountModel.time,
       configuration.ConstantAMRegistrationCountry, payload.accountModel.registrationCountry,
       configuration.ConstantAMRegistrationMacAddress, payload.accountModel.registrationMacAddress,
       configuration.ConstantAMRegistrationStatus, payload.accountModel.registrationStatus,
@@ -37,6 +38,7 @@ module.exports = {
 
     /* Add to NetworkPrivacy:IPDetails:IPAddress */
     tableName 	= configuration.TableMANetworkPrivacyIPDetails + payload.ipAddress
+  
     multi.hmset(tableName,
       configuration.ConstantNPMMacAddress, payload.networkModel.macAddress,
       configuration.ConstantNPMCountry, payload.networkModel.country,
@@ -46,39 +48,47 @@ module.exports = {
 
     /* Add to accountModel:ReferralPlan:AccountHashID */
     tableName 	= configuration.TableMSAccountModelReferralPlan + payload.referralAccount
+    
     multi.zadd(tableName, score, accountHashID)
 
     /* Add to NetworkPrivacy:IPList:AccountHashID */
     tableName 	= configuration.TableMSNetworkPrivacyIPList + accountHashID
-    multi.zadd(tableName, score, payload.networkModel.IPAddress)
+    
+    multi.zadd(tableName, score, payload.ipAddress)
 
     /* Add to accountModel:CompanyName:companyName */
     tableName 	= configuration.TableMSAccountModelCompanyName + payload.accountModel.companyName
+ 
     multi.zadd(tableName, score, accountHashID)
 
     /* Add to accountModel:Username:username */
     tableName 	= configuration.TableMSAccountModelUsername + payload.accountModel.username
+    
     multi.zadd(tableName, score, accountHashID)
 
     /* Add to accountModel:Email:email */
     tableName 	= configuration.TableMSAccountModelEmail + payload.accountModel.email
+    
     multi.zadd(tableName, score, accountHashID)
 
     /* Add to accountModel:RegistrationStatusType1: */
-    tableName 	= configuration.TableAccountModel.registrationStatus[payload[configuration.ConstantAMRegistrationStatus]]
+    tableName 	= configuration.TableAccountModel.registrationStatus[payload.accountModel[configuration.ConstantAMRegistrationStatus]]
+   
     multi.zadd(tableName, score, accountHashID)
 
     /* Add to accountModel:SuspendStatusType1: */
-    tableName 	= configuration.TableAccountModel.suspendStatusType[payload[configuration.ConstantAMSuspendStatus]]
+    tableName 	= configuration.TableAccountModel.suspendStatusType[payload.accountModel[configuration.ConstantAMSuspendStatus]]
+    
     multi.zadd(tableName, score, accountHashID)
 
     /* Add to accountModel:CountryType1: */
-    tableName 	= utility.mapCountryToTable(payload[configuration.ConstantAMRegistrationCountry])
+    tableName 	= utility.mapCountryToTable(payload.accountModel[configuration.ConstantAMRegistrationCountry])
+    
     multi.zadd(tableName, score, accountHashID)
 
     multi.exec(function (err, replies) {
       if (err)
-      callback(err, null)
+  		callback(err, null)
       callback(null, configuration.message.registerAccount.successful)
     })
   }

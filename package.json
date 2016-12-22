@@ -11,6 +11,7 @@
     "fakeredis": "latest",
     "ioredis": "latest",
     "node-uuid": "^1.4.7",
+    "request": "^2.79.0",
     "ws": "latest"
   },
   "devDependencies": {
@@ -20,6 +21,6 @@
   "scripts": {
     "start": "actionhero start",
     "actionhero": "actionhero",
-    "test": "NODE_ENV=test mocha --reporter spec ./test"
+    "test": "mocha"
   }
 }
