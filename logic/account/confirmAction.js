@@ -1,11 +1,13 @@
 var configuration = require('../../config/configuration.json')
 
 module.exports = {
-  confirm: function(redisClient, accountHashID, callback) {
+  confirm: function (redisClient, accountHashID, callback) {
     var accountTable = configuration.TableMAAccountModel + accountHashID
-    redisClient.hset(accountHashID, configuration.ConstantAMRegistrationStatus, configuration.enum.registrationStatusType.approved, function(err, replies) {
-      if (err)
+    redisClient.hset(accountHashID, configuration.ConstantAMRegistrationStatus, configuration.enum.registrationStatusType.approved, function (err, replies) {
+      if (err) {
         callback(err, null)
+        return
+      }
       callback(null, configuration.message.confirm.successful)
     })
   }

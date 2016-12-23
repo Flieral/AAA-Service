@@ -1,26 +1,26 @@
 var configuration = require('../../config/configuration.json')
-var utility       = require('../../public/utility')
+var utility = require('../../public/utility')
 
 module.exports = {
-  register: function(redisClient, payload, callback) {
+  register: function (redisClient, payload, callback) {
     var tableName
     var accountHashID = utility.generateUniqueHashID()
     var score = payload[configuration.ConstantAMTime]
     var multi = redisClient.multi()
 
-    payload.accountModel.registrationStatus  = configuration.enum.registrationStatusType.pending
-    payload.accountModel.suspendStatus       = configuration.enum.suspendStatusType.none
-    payload.accountModel.time                = payload.time
-    payload.accountModel.webhookBaseURL      = 'http://' + payload.accountModel.companyName + '.Flieral.com'
+    payload.accountModel.registrationStatus = configuration.enum.registrationStatusType.pending
+    payload.accountModel.suspendStatus = configuration.enum.suspendStatusType.none
+    payload.accountModel.time = payload.time
+    payload.accountModel.webhookBaseURL = 'http://' + payload.accountModel.companyName + '.Flieral.com'
     payload.accountModel.attempt = 0
     payload.accountModel.message = configuration.message.interaction.registerAccount
 
-    payload.networkModel.country     = payload.accountModel.registrationCountry
-    payload.networkModel.macAddress  = payload.accountModel.registrationMacAddress
+    payload.networkModel.country = payload.accountModel.registrationCountry
+    payload.networkModel.macAddress = payload.accountModel.registrationMacAddress
 
     /* Add to accountModel:accountHashID */
-    tableName 	= configuration.TableMAAccountModel + accountHashID
-    
+    tableName = configuration.TableMAAccountModel + accountHashID
+
     multi.hmset(tableName,
       configuration.ConstantAMEmail, payload.accountModel.email,
       configuration.ConstantAMCompanyName, payload.accountModel.companyName,
@@ -37,8 +37,8 @@ module.exports = {
     )
 
     /* Add to NetworkPrivacy:IPDetails:IPAddress */
-    tableName 	= configuration.TableMANetworkPrivacyIPDetails + payload.ipAddress
-  
+    tableName = configuration.TableMANetworkPrivacyIPDetails + payload.ipAddress
+
     multi.hmset(tableName,
       configuration.ConstantNPMMacAddress, payload.networkModel.macAddress,
       configuration.ConstantNPMCountry, payload.networkModel.country,
@@ -47,48 +47,50 @@ module.exports = {
     )
 
     /* Add to accountModel:ReferralPlan:AccountHashID */
-    tableName 	= configuration.TableMSAccountModelReferralPlan + payload.referralAccount
-    
+    tableName = configuration.TableMSAccountModelReferralPlan + payload.referralAccount
+
     multi.zadd(tableName, score, accountHashID)
 
     /* Add to NetworkPrivacy:IPList:AccountHashID */
-    tableName 	= configuration.TableMSNetworkPrivacyIPList + accountHashID
-    
+    tableName = configuration.TableMSNetworkPrivacyIPList + accountHashID
+
     multi.zadd(tableName, score, payload.ipAddress)
 
     /* Add to accountModel:CompanyName:companyName */
-    tableName 	= configuration.TableMSAccountModelCompanyName + payload.accountModel.companyName
-    
+    tableName = configuration.TableMSAccountModelCompanyName + payload.accountModel.companyName
+
     multi.set(tableName, accountHashID)
 
     /* Add to accountModel:Username:username */
-    tableName 	= configuration.TableMSAccountModelUsername + payload.accountModel.username
-    
+    tableName = configuration.TableMSAccountModelUsername + payload.accountModel.username
+
     multi.set(tableName, accountHashID)
 
     /* Add to accountModel:Email:email */
-    tableName 	= configuration.TableMSAccountModelEmail + payload.accountModel.email
-    
+    tableName = configuration.TableMSAccountModelEmail + payload.accountModel.email
+
     multi.set(tableName, accountHashID)
 
     /* Add to accountModel:RegistrationStatusType1: */
-    tableName 	= configuration.TableAccountModel.registrationStatus[payload.accountModel[configuration.ConstantAMRegistrationStatus]]
-   
+    tableName = configuration.TableAccountModel.registrationStatus[payload.accountModel[configuration.ConstantAMRegistrationStatus]]
+
     multi.zadd(tableName, score, accountHashID)
 
     /* Add to accountModel:SuspendStatusType1: */
-    tableName 	= configuration.TableAccountModel.suspendStatusType[payload.accountModel[configuration.ConstantAMSuspendStatus]]
-    
+    tableName = configuration.TableAccountModel.suspendStatusType[payload.accountModel[configuration.ConstantAMSuspendStatus]]
+
     multi.zadd(tableName, score, accountHashID)
 
     /* Add to accountModel:CountryType1: */
-    tableName 	= utility.mapCountryToTable(payload.accountModel[configuration.ConstantAMRegistrationCountry])
-    
+    tableName = utility.mapCountryToTable(payload.accountModel[configuration.ConstantAMRegistrationCountry])
+
     multi.zadd(tableName, score, accountHashID)
 
     multi.exec(function (err, replies) {
-      if (err)
-  		callback(err, null)
+      if (err) {
+        callback(err, null)
+        return
+      }
       callback(null, configuration.message.registerAccount.successful)
     })
   }

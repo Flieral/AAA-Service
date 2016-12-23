@@ -16,9 +16,10 @@ exports.register = {
           if (err) {
             data.response.error = err.error
             next(err)
+          } else {
+            data.response.result = replies
+            next()
           }
-          data.response.result = replies
-          next()
         })
       }
     })

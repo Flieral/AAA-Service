@@ -1,12 +1,14 @@
 var configuration = require('../../config/configuration.json')
 
 module.exports = {
-  verificate: function(redisClient, accountHashID, option, ipAddress, networkModel, callback) {
+  verificate: function (redisClient, accountHashID, option, ipAddress, networkModel, callback) {
     var verificateTable = configuration.TableMAAccountModelVerificate + accountHashID
-    redisClient.get(verificateTable, function(err, replies) {
-      if (err)
+    redisClient.get(verificateTable, function (err, replies) {
+      if (err) {
         callback(err, null)
-      if (replies !== 'null') {
+        return
+      }
+      if (replies !== null || replies !== undefined) {
         var multi = redisClient.multi()
         var score = utility.getUnixTimeStamp()
         var accountTable = configuration.TableMAAccountModel + accountHashID
@@ -16,12 +18,13 @@ module.exports = {
         multi.zrem(oldRegisterStatusTable, accountHashID)
         multi.zadd(newRegisterStatusTable, score, accountHashID)
         multi.exec(function (err, replies) {
-          if (err)
-          callback(err, null)
+          if (err) {
+            callback(err, null)
+            return
+          }
           callback(null, configuration.message.verificate.successful)
         })
-      }
-      else
+      } else
         callback(null, configuration.message.verificate.failed)
     })
   }

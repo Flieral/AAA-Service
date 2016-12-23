@@ -44,33 +44,43 @@ exports.login = {
         data.response.error = err.error
         next(err)
       }
-      accountHashID = replies
-      suspensionChecker.checkAccountSuspension(api.redisClient, accountHashID, function(err, replies) {
-        if(err) {
-          data.response.error = err.error
-          next(err)
-        }
-        attemptChecker.checkAccountBlock(api.redisClient, accountHashID, function(err, replies) {
+      else {
+        accountHashID = replies
+        suspensionChecker.checkAccountSuspension(api.redisClient, accountHashID, function(err, replies) {
           if(err) {
             data.response.error = err.error
             next(err)
           }
-          networkChecker.startNetworkChecking(api.redisClient, accountHashID, data.params.loginObject.ipAddress, data.params.loginObject.networkModel, function(err, replies) {
-            if(err) {
-              data.response.error = err.error
-              next(err)
-            }
-            sessionManager.renewSessionForAccount(api.redisClient, accountHashID, function(err, replies) {
+          else {
+            attemptChecker.checkAccountBlock(api.redisClient, accountHashID, function(err, replies) {
               if(err) {
                 data.response.error = err.error
                 next(err)
               }
-              data.response.result = replies
-              next()
+              else {
+                networkChecker.startNetworkChecking(api.redisClient, accountHashID, data.params.loginObject.ipAddress, data.params.loginObject.networkModel, function(err, replies) {
+                  if(err) {
+                    data.response.error = err.error
+                    next(err)
+                  }
+                  else {
+                    sessionManager.renewSessionForAccount(api.redisClient, accountHashID, function(err, replies) {
+                      if(err) {
+                        data.response.error = err.error
+                        next(err)
+                      }
+                      else {
+                        data.response.result = replies
+                        next()
+                      }
+                    })
+                  }
+                })
+              }
             })
-          })
+          }
         })
-      })
+      }
     })
   }
 }
