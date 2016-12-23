@@ -58,18 +58,18 @@ module.exports = {
 
     /* Add to accountModel:CompanyName:companyName */
     tableName 	= configuration.TableMSAccountModelCompanyName + payload.accountModel.companyName
- 
-    multi.zadd(tableName, score, accountHashID)
+    
+    multi.set(tableName, accountHashID)
 
     /* Add to accountModel:Username:username */
     tableName 	= configuration.TableMSAccountModelUsername + payload.accountModel.username
     
-    multi.zadd(tableName, score, accountHashID)
+    multi.set(tableName, accountHashID)
 
     /* Add to accountModel:Email:email */
     tableName 	= configuration.TableMSAccountModelEmail + payload.accountModel.email
     
-    multi.zadd(tableName, score, accountHashID)
+    multi.set(tableName, accountHashID)
 
     /* Add to accountModel:RegistrationStatusType1: */
     tableName 	= configuration.TableAccountModel.registrationStatus[payload.accountModel[configuration.ConstantAMRegistrationStatus]]
